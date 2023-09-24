@@ -10,7 +10,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 
-from tasks.models import Task, TaskPhoto
+from tasks.models import Task, TaskPhoto, Project
 from tasks.forms import TaskPhotoUploadForm, TaskForm
 from tasks.mixins import OwnerRequiredMixin
 
@@ -146,3 +146,23 @@ class TaskDeleteView(OwnerRequiredMixin, DeleteView):
     model = Task
     template_name = 'tasks/task_delete.html'
     success_url = reverse_lazy('task-list')
+
+
+def all_projects(request):
+    projects = Project.objects.all()
+
+    context = {
+        'projects': projects,
+    }
+    return render(request, 'tasks/projects.html', context)
+
+
+def project_detail(request, pk):
+    project = Project.objects.get(id=pk)
+    tasks = Task.objects.filter(project=project)
+
+    context = {
+        'project': project,
+        'tasks': tasks,
+    }
+    return render(request, 'tasks/project_detail.html', context)

@@ -1,10 +1,65 @@
 {% extends 'tasks/base.html' %}
 
-{% block title %} {{request.user.username|upper}} {% endblock %}
+{% load static %}
+
+{% block title %}User Profile: {{ user.username }}{% endblock %}
 
 {% block content %}
+    <div class="container mx-auto p-4">
+        <h2 class="text-2xl font-semibold mb-4">{{ user.username|upper }}</h2>
 
-<h2>Profile</h2>
+        <div class="flex items-center mb-4">
+            <div class="w-16 h-16 bg-orange-200 rounded-full overflow-hidden">
+                <img src="{% static 'images/avatar.png' %}" alt="{{ user.username }}'s Profile Picture" class="w-full h-full object-cover">
+            </div>
+            <div class="ml-4">
+                <p class="text-lg font-semibold">{{ user.username }}</p>
+                <p class="text-gray-600">Email: {{ user.email }}</p>
+            </div>
+        </div>
 
-  
+        {% if projects %}
+            <h3 class="text-xl font-semibold mb-4 mt-10">Projects Created by {{ user.username }}</h3>
+            <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {% for project in projects %}
+                    <li class="bg-orange-100 border rounded-lg overflow-hidden">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold">{{ project.title }}</h3>
+                            <p class="text-sm text-gray-600">Created at: {{ project.created_at|date }}</p>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-lg text-gray-600">No projects created by {{ user.username }}.</p>
+        {% endif %}
+
+        {% if tasks %}
+            <h3 class="text-xl font-semibold mb-4 mt-12">Tasks Created by {{ user.username }}</h3>
+            <ul class="divide-y divide-gray-200">
+                {% for task in tasks %}
+                    <li class="py-4 mt-6">
+                        <h3 class="text-lg font-semibold">{{ task.title }}</h3>
+                        <p class="text-sm text-gray-600">Created at: {{ task.creation_date|date }}</p>
+                        <p class="text-sm text-gray-600">Due Date: {{ task.due_date|date }}</p>
+                        <p class="text-sm text-gray-600">Priority: {{ task.priority }}</p>
+                        <p class="text-sm text-gray-600">Complete: {% if task.is_complete %}<span class="text-green-500">Yes</span>{% else %}<span class="text-red-500">No</span>{% endif %}</p>
+                    </li>
+                    <div class="buttons">
+                        <a class="bg-yellow-500 hover:bg-orange-900 text-white font-semibold py-2 px-3 rounded-lg mr-4" href="{% url 'task-detail' task.id %}">
+                            View
+                        </a>
+                        <a class="bg-orange-500 hover:bg-gray-900 text-white font-semibold py-2 px-3 rounded-lg mr-4" href="{% url 'update-task' task.id %}">
+                            Edit
+                        </a>
+                        <a class="bg-red-500 hover:bg-red-800 text-white font-semibold py-2 px-3 rounded-lg" href="{% url 'delete-task' task.id %}">
+                            Delete
+                        </a>
+                    </div>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-lg text-gray-600">No tasks created by {{ user.username }}.</p>
+        {% endif %}
+    </div>
 {% endblock %}

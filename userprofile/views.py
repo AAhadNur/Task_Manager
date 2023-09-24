@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
 from userprofile.forms import MyUserCreationForm, UserForm
+from tasks.models import Task, Project
 
 # Create your views here.
 
@@ -64,6 +65,8 @@ def registerPage(request):
 
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
+    projects = Project.objects.filter(created_by=user)
+    tasks = Task.objects.filter(created_by=user)
 
-    context = {'user': user}
+    context = {'user': user, 'projects': projects, 'tasks': tasks}
     return render(request, 'userprofile/profile.html', context)
