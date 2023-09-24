@@ -1,15 +1,18 @@
 from django.utils import timezone
 from datetime import date
 from datetime import timedelta
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, CreateView, UpdateView
 from django.db.models import Q
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
 
 from tasks.models import Task, TaskPhoto
-from tasks.forms import TaskPhotoUploadForm
+from tasks.forms import TaskPhotoUploadForm, TaskForm
+from tasks.mixins import OwnerRequiredMixin
 
 # Create your views here.
 
@@ -117,3 +120,23 @@ def delete_task_photo(request, task_id, photo_id):
         photo.delete()
 
     return redirect('task-detail', pk=task.pk)
+
+
+class TaskCreateView(LoginRequiredMixin, CreateView):
+    model = Task
+    form_class = TaskForm
+    template_name = 'tasks/task_form.html'
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
+
+
+class TaskUpdateView(OwnerRequiredMixin, UpdateView):
+    model = Task
+    form_class = TaskForm
+    template_name = 'tasks/task_form.html'
+
+    def get_success_url(self):
+        return reverse('task-detail', kwargs={'pk': self.object.pk})

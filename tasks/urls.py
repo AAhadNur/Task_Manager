@@ -7,6 +7,8 @@ from tasks import views
 urlpatterns = [
     path('', views.TaskListView.as_view(), name='home'),
     path('task/<int:pk>/', views.TaskDetailView.as_view(), name='task-detail'),
+    path('task/create/', views.TaskCreateView.as_view(), name='create-task'),
+    path('task/update/<int:pk>/', views.TaskUpdateView.as_view(), name='update-task'),
 
 
     path('task/<int:task_id>/delete-photo/<int:photo_id>/',

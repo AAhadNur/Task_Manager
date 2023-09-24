@@ -14,7 +14,7 @@
 
         <tbody>
             {% if request.user.is_authenticated %}
-            <a href="#" class="block my-2 text-blue-500 hover:underline">Create a new task</a>
+            <a href="{% url 'create-task' %}" class="block my-2 text-blue-500 hover:underline">Create a new task</a>
             {% endif %}
 
             {% for task in tasks %}
@@ -32,7 +32,7 @@
                 <td class="border border-gray-300 px-4 py-2">
                     <a href="{% url 'task-detail' task.id %}" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">View</a>
                     {% if task.created_by == request.user %}
-                    <a href="#" class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600">Edit</a>
+                    <a href="{% url 'update-task' task.id %}" class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600">Edit</a>
                     <a href="#" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Delete</a>
                     {% endif %}
                 </td>

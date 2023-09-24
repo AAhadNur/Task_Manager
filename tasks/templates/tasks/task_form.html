@@ -1,0 +1,57 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}{% if task.id %}Edit Task{% else %}Create Task{% endif %}{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto p-4">
+        <section class="mt-8">
+            <div class="container">
+                <h2 class="text-2xl font-semibold text-center mb-4">{% if task.id %}Edit Task{% else %}Create Task{% endif %}</h2>
+                <form method="post" class="mt-4 mx-auto max-w-md">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-semibold" for="{{ form.project.id_for_label }}">Project:</label>
+                        <div class="relative">
+                            {{ form.project }}
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-semibold" for="{{ form.title.id_for_label }}">Title:</label>
+                        <div class="relative">
+                            {{ form.title }}
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-semibold" for="{{ form.description.id_for_label }}">Description:</label>
+                        <div class="relative">
+                            {{ form.description }}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-semibold" for="{{ form.due_date.id_for_label }}">Due Date:</label>
+                        <div class="relative">
+                            {{ form.due_date }}
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-semibold" for="{{ form.priority.id_for_label }}">Priority:</label>
+                        <div class="relative">
+                            {{ form.priority }}
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-semibold" for="{{ form.is_complete.id_for_label }}">Complete:</label>
+                        <div class="relative">
+                            {{ form.is_complete }}
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center mt-6">
+                        <button type="submit" class="bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none">Save</button>
+                        <a href="{% if task.id %}{% url 'task-detail' task.id %}{% else %}{% url 'home' %}{% endif %}" class="text-orange-500 hover:underline ml-4">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+{% endblock %}
