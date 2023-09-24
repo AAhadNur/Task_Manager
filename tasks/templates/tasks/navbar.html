@@ -13,7 +13,7 @@
                 <a class="navbar-item text-orange-600 font-semibold hover:text-orange-900 ml-4" href="#">
                     Tasks
                 </a>
-                <a class="navbar-item text-orange-600 font-semibold hover:text-orange-900 ml-4" href="#">
+                <a class="navbar-item text-orange-600 font-semibold hover:text-orange-900 ml-4" href="{% url 'profile' request.user.id %}">
                     Profile
                 </a>
             </div>
@@ -24,7 +24,7 @@
                     {% if user.is_authenticated %}
                         <div class="navbar-item">
                             <div class="buttons">
-                                <a class="text-orange-600 font-semibold hover:text-gray-300 mr-5" href="#">
+                                <a class="text-orange-600 font-semibold hover:text-gray-300 mr-5" href="{% url 'profile' request.user.id %}">
                                     Hi, {{request.user.username|upper}}
                                 </a>
                                 <a class="bg-orange-500 hover:bg-gray-900 text-white font-semibold py-4 px-5 rounded-lg mr-4" href="{% url 'logout' %}">

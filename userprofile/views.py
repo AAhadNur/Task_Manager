@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
-from userprofile.forms import MyUserCreationForm
+from userprofile.forms import MyUserCreationForm, UserForm
 
 # Create your views here.
 
@@ -59,3 +60,10 @@ def registerPage(request):
             messages.error(request, 'An error occurred during registration')
 
     return render(request, 'userprofile/register.html', {'form': form})
+
+
+def userProfile(request, pk):
+    user = User.objects.get(id=pk)
+
+    context = {'user': user}
+    return render(request, 'userprofile/profile.html', context)

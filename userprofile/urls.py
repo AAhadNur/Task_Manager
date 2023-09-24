@@ -25,4 +25,7 @@ urlpatterns = [
         template_name='userprofile/password_reset_confirm.html'), name='password_reset_confirm'),
     path('password-reset-complete/', PasswordResetCompleteView.as_view(
         template_name='userprofile/password_reset_complete.html'), name='password_reset_complete'),
+
+    # profile urls
+    path('profile/<int:pk>/', views.userProfile, name='profile'),
 ]
