@@ -9,6 +9,11 @@ db.sqlite3
 */migrations/
 
 
+### Static and Media Files
+static/
+media/
+
+
 ### Editor files
 .vscode/
 
