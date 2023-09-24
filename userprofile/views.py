@@ -26,6 +26,7 @@ def loginPage(request):
 
         if user is not None:
             login(request, user)
+            messages.success(request, 'Logged in ...')
             return redirect('home')
         else:
             messages.error(request, 'Username OR password does not exit')
@@ -52,6 +53,7 @@ def registerPage(request):
             user.username = user.username
             user.save()
             login(request, user)
+            messages.success(request, 'User registration done successfully !!')
             return redirect('home')
         else:
             messages.error(request, 'An error occurred during registration')

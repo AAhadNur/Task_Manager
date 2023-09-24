@@ -9,6 +9,10 @@ urlpatterns = [
 
     # userprofile app urls
     path('', include('userprofile.urls')),
+
+
+    # tasks app urls
+    path('', include('tasks.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

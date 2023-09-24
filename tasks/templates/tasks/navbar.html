@@ -1,0 +1,52 @@
+{% load static %}
+
+<nav class="bg-orange-200 p-2" role="navigation" aria-label="main navigation">
+    <div class="container mx-auto">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center"> <!-- Added a container div for left-aligned content -->
+                <a class="text-orange-500 text-lg font-semibold mr-4" href="{% url 'home' %}">
+                    <img src="{% static 'images/logo.png' %}" alt="Logo" class="h-12">
+                </a>
+                <a class="navbar-item text-orange-600 font-semibold hover:text-orange-900" href="#">
+                    Projects
+                </a>
+                <a class="navbar-item text-orange-600 font-semibold hover:text-orange-900 ml-4" href="#">
+                    Tasks
+                </a>
+                <a class="navbar-item text-orange-600 font-semibold hover:text-orange-900 ml-4" href="#">
+                    Profile
+                </a>
+            </div>
+
+
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-end">
+                    {% if user.is_authenticated %}
+                        <div class="navbar-item">
+                            <div class="buttons">
+                                <a class="text-orange-600 font-semibold hover:text-gray-300 mr-5" href="#">
+                                    Hi, {{request.user.username|upper}}
+                                </a>
+                                <a class="bg-orange-500 hover:bg-gray-900 text-white font-semibold py-4 px-5 rounded-lg mr-4" href="{% url 'logout' %}">
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                        
+                    {% else %}
+                        <div class="navbar-item">
+                            <div class="buttons">
+                                <a class="bg-orange-500 hover:bg-gray-900 text-white font-semibold py-4 px-5 rounded-lg mr-4" href="{% url 'login' %}">
+                                    Login
+                                </a>
+                                <a class="bg-gray-500 hover:bg-orange-700 text-white font-semibold py-4 px-5 rounded-lg" href="{% url 'signup' %}">
+                                    Signup
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
