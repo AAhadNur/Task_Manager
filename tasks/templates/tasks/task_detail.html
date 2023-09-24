@@ -1,0 +1,61 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}Task Details{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto p-4">
+        <section class="mt-8">
+            <div class="container">
+                <h2 class="text-2xl font-semibold">Task Details</h2>
+                <div class="bg-white rounded-lg shadow-md">
+                    <div class="p-4">
+                        <p class="mb-4"><strong>Title:</strong> {{ task.title }}</p>
+                        {% if task.description %}
+                        <p class="mb-4"><strong>Description:</strong> {{ task.description }}</p>
+                        {% else %}
+                        <p class="mb-4"><small>Task Description not added</small></p>
+                        {% endif %}
+                        <p class="mb-4"><strong>Creation Date:</strong> {{ task.creation_date|date }}</p>
+                        <p class="mb-4"><strong>Time Left: </strong> {{ task.due_date|timeuntil }}</p>
+                        <p class="mb-4"><strong>Priority:</strong> {{ task.priority }}</p>
+                        <p><strong>Complete:</strong> {% if task.is_complete %}<span class="text-green-500">Yes</span>{% else %}<span class="text-red-500">No</span>{% endif %}</p>
+                    </div>
+                    <footer class="bg-gray-100 p-4">
+                        {% if task.created_by == request.user %}
+                        <a href="#" class="text-yellow-500 hover:underline mr-4">Edit</a>
+                        {% endif %}
+                        <a href="{% url 'home' %}" class="text-blue-500 hover:underline">Back to List</a>
+                    </footer>
+                </div>
+
+                <h3 class="text-xl font-semibold mt-8">Task Photos</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                    {% for photo in task_photos %}
+                        <div class="bg-white rounded-lg shadow-md">
+                            <div class="relative">
+                                <img src="{{ photo.photo.url }}" alt="Task Photo" class="w-full h-48 object-cover">
+                            </div>
+                            <footer class="bg-gray-100 p-2">
+                                {% if task.created_by == request.user %}
+                                <a href="{% url 'delete-task-photo' task.id photo.id %}" class="text-red-500 hover:underline">Delete Photo</a>
+                                {% endif %}
+                            </footer>
+                        </div>
+                    {% empty %}
+                        <p class="mt-4">No photos available for this task.</p>
+                    {% endfor %}
+                </div>
+
+                <!-- Photo Upload Form -->
+                {% if task.created_by == request.user %}
+                <h3 class="text-xl font-semibold mt-8">Add Photo</h3>
+                <form method="post" enctype="multipart/form-data" class="mt-4">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button type="submit" class="bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none">Upload Photo</button>
+                </form>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+{% endblock %}

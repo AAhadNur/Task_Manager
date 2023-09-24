@@ -1,11 +1,15 @@
 from django.utils import timezone
 from datetime import date
 from datetime import timedelta
-from django.shortcuts import render
-from django.views.generic import ListView
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import FormView
 from django.db.models import Q
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
-from tasks.models import Task
+from tasks.models import Task, TaskPhoto
+from tasks.forms import TaskPhotoUploadForm
 
 # Create your views here.
 
@@ -75,3 +79,41 @@ class TaskListView(ListView):
             )
 
         return queryset
+
+
+class TaskDetailView(DetailView, FormView):
+    model = Task
+    template_name = 'tasks/task_detail.html'
+    context_object_name = 'task'
+    form_class = TaskPhotoUploadForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        task = self.get_object()
+
+        task_photos = task.photos.all()
+
+        context['task_photos'] = task_photos
+
+        return context
+
+    def form_valid(self, form):
+        task = self.get_object()
+        photo = self.request.FILES.get('photo')
+
+        if photo:
+            task_photo = TaskPhoto(task=task, photo=photo)
+            task_photo.save()
+
+        return HttpResponseRedirect(reverse('task-detail', kwargs={'pk': task.pk}))
+
+
+# function based view of deleting task's photos
+def delete_task_photo(request, task_id, photo_id):
+    task = get_object_or_404(Task, pk=task_id)
+    photo = get_object_or_404(TaskPhoto, pk=photo_id)
+
+    if photo.task == task:
+        photo.delete()
+
+    return redirect('task-detail', pk=task.pk)

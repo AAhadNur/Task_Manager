@@ -30,7 +30,7 @@
                 <td class="border border-gray-300 px-4 py-2">{{ task.priority }}</td>
                 <td class="border border-gray-300 px-4 py-2">{% if task.is_complete %}Yes{% else %}No{% endif %}</td>
                 <td class="border border-gray-300 px-4 py-2">
-                    <a href="#" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">View</a>
+                    <a href="{% url 'task-detail' task.id %}" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">View</a>
                     {% if task.created_by == request.user %}
                     <a href="#" class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600">Edit</a>
                     <a href="#" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Delete</a>
