@@ -1,0 +1,19 @@
+
+### Django ###
+*.pyc
+__pycache__/
+db.sqlite3
+
+
+### Django Migration Files
+*/migrations/
+
+
+### Editor files
+.vscode/
+
+
+# Environments
+.env
+venv/
+
