@@ -4,7 +4,7 @@ from datetime import timedelta
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import FormView, CreateView, UpdateView
+from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.db.models import Q
 from django.urls import reverse
 from django.http import HttpResponseRedirect
@@ -140,3 +140,9 @@ class TaskUpdateView(OwnerRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('task-detail', kwargs={'pk': self.object.pk})
+
+
+class TaskDeleteView(OwnerRequiredMixin, DeleteView):
+    model = Task
+    template_name = 'tasks/task_delete.html'
+    success_url = reverse_lazy('task-list')
