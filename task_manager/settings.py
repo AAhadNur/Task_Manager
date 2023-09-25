@@ -33,8 +33,8 @@ INSTALLED_APPS = [
 
     'rest_framework',
 
+    'api',
     'tasks',
-
     'userprofile',
 ]
 
