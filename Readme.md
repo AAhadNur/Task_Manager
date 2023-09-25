@@ -2,7 +2,7 @@
 
 A Django web app for users to create, manage, and organize tasks efficiently. Includes features like due dates, priority levels, and photo attachments.
 
-### Installation / Set up
+## Installation / Set up
 
 --> Clone the repository using the command below :
 
@@ -13,7 +13,7 @@ git clone https://github.com/AAhadNur/Task_Manager.git
 --> Move into the directory where we have the project files :
 
 ```bash
-cd StudyBud
+cd task_manager
 ```
 
 --> Create a virtual environment :
@@ -56,7 +56,7 @@ python3 manage.py loaddata data.json
 
 #
 
-### Running the App
+## Running the App
 
 --> To run the App, we use :
 
@@ -66,7 +66,7 @@ python3 manage.py runserver
 
 > ⚠ Then, the development server will be started at `http://127.0.0.1:8000/`
 
-### Environment variables set up instruction and their usage
+## Environment variables set up instruction and their usage
 
 --> Create the `.env` File :
 
@@ -98,7 +98,7 @@ touch .env
 
 > ⚠ We set up our settings.py file to load variables from .env file automatically
 
-### API Documentation
+## API Documentation
 
 #### List of All Tasks
 
