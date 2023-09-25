@@ -22,7 +22,8 @@
                     </div>
                     <footer class="bg-gray-100 p-4">
                         {% if task.created_by == request.user %}
-                        <a href="{% url 'update-task' task.id %}" class="text-yellow-500 hover:underline mr-4">Edit</a>
+                        <a href="{% url 'update-task' task.id %}" class="text-yellow-500 font-medium hover:underline mr-4">Edit</a>
+                        <a href="{% url 'delete-task' task.id %}" class="text-red-500 font-medium hover:underline mr-4">Delete</a>
                         {% endif %}
                         <a href="{% url 'home' %}" class="text-blue-500 hover:underline">Back to List</a>
                     </footer>

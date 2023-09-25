@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
 from tasks.models import Task
-from api.serializers import TaskSerializer
+from api.serializers import TaskViewSerializer, TaskCreateSerializer
 from api.permissions import IsTaskOwner
 
 # Create your views here.
@@ -12,12 +12,12 @@ from api.permissions import IsTaskOwner
 
 class TaskListView(generics.ListAPIView):
     queryset = Task.objects.all()
-    serializer_class = TaskSerializer
+    serializer_class = TaskViewSerializer
 
 
 class TaskCreateView(generics.CreateAPIView):
     queryset = Task.objects.all()[:3]
-    serializer_class = TaskSerializer
+    serializer_class = TaskCreateSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
@@ -29,12 +29,12 @@ class TaskRetrieveUpdateDeleteView(APIView):
 
     def get(self, request, pk):
         task = get_object_or_404(Task, pk=pk)
-        serializer = TaskSerializer(task)
+        serializer = TaskViewSerializer(task)
         return Response(serializer.data)
 
     def put(self, request, pk):
         task = get_object_or_404(Task, pk=pk)
-        serializer = TaskSerializer(task, data=request.data)
+        serializer = TaskViewSerializer(task, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

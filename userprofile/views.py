@@ -28,7 +28,8 @@ def loginPage(request):
 
         if user is not None:
             login(request, user)
-            messages.success(request, 'Logged in ...')
+            messages.success(
+                request, f'Welcom {request.user.username.upper()}')
             return redirect('home')
         else:
             messages.error(request, 'Username OR password does not exit')

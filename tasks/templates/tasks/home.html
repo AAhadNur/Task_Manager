@@ -1,6 +1,6 @@
 {% extends 'tasks/base.html' %}
 
-{% block title %}Task List{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block content %}
     <div class="container mx-auto p-4">
@@ -9,13 +9,13 @@
         <form method="get" class="mb-8">
             <div class="flex flex-wrap -mx-2">
                 <div class="w-full md:w-3/4 px-2 mb-4 md:mb-0">
-                    <label class="block text-gray-700 font-semibold mb-2" for="search">Search by Title/Description:</label>
+                    <label class="block text-gray-700 font-semibold mb-2" for="search">Search by Title:</label>
                     <div class="relative">
                         <input type="text" class="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-orange-500" id="search" name="search" value="{{ request.GET.search }}">
                     </div>
                 </div>
                 <div class="w-full md:w-1/4 px-2 mb-4 md:mb-0 flex items-end justify-end">
-                    <button type="submit" class="bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none">Apply Filters</button>
+                    <button type="submit" class="bg-lime-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none">Search</button>
                 </div>
             </div>
 
@@ -67,6 +67,10 @@
                             <option value="false">Incomplete</option>
                         </select>
                     </div>
+                </div>
+
+                <div class="w-full md:w-1/1 px-2 mb-4 md:mb-0 mt-3 flex justify-center">
+                    <button type="submit" class="bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none">Apply Filters</button>
                 </div>
             </div>
         </form>

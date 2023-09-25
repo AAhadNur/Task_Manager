@@ -3,9 +3,8 @@
         <thead>
             <tr>
                 <th class="border border-gray-300 px-4 py-2">Title</th>
-                <th class="border border-gray-300 px-4 py-2">Project</th>
                 <th class="border border-gray-300 px-4 py-2">Created By</th>
-                <th class="border border-gray-300 px-4 py-2">Due Date</th>
+                <th class="border border-gray-300 px-4 py-2">Time Left</th>
                 <th class="border border-gray-300 px-4 py-2">Priority</th>
                 <th class="border border-gray-300 px-4 py-2">Complete</th>
                 <th class="border border-gray-300 px-4 py-2">Actions</th>
@@ -21,12 +20,9 @@
             <tr>
                 <td class="border border-gray-300 px-4 py-2">{{ task.title }}</td>
                 <td class="border border-gray-300 px-4 py-2">
-                    <a href="#" class="text-blue-500 hover:underline">{{ task.project }}</a>
-                </td>
-                <td class="border border-gray-300 px-4 py-2">
                     <a href="{% url 'profile' task.created_by.id %}" class="text-blue-500 hover:underline">{{ task.created_by|upper }}</a>
                 </td>
-                <td class="border border-gray-300 px-4 py-2">{{ task.due_date|date }}</td>
+                <td class="border border-gray-300 px-4 py-2">{{ task.due_date|timeuntil }}</td>
                 <td class="border border-gray-300 px-4 py-2">{{ task.priority }}</td>
                 <td class="border border-gray-300 px-4 py-2">{% if task.is_complete %}Yes{% else %}No{% endif %}</td>
                 <td class="border border-gray-300 px-4 py-2">
@@ -46,18 +42,27 @@
     </table>
 
     <div class="mt-4 flex items-center justify-between">
-        <div>
-            {% if tasks.has_previous %}
-                <a href="?page=1" class="text-blue-500 hover:underline">First</a>
-                <a href="?page={{ tasks.previous_page_number }}" class="text-blue-500 hover:underline">Previous</a>
-            {% endif %}
-
-            <span class="text-gray-600 ml-2">Page {{ tasks.number }} of {{ tasks.paginator.num_pages }}.</span>
-
-            {% if tasks.has_next %}
-                <a href="?page={{ tasks.next_page_number }}" class="text-blue-500 hover:underline">Next</a>
-                <a href="?page={{ tasks.paginator.num_pages }}" class="text-blue-500 hover:underline">Last</a>
-            {% endif %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1" class="mr-3 font-mono font-semibold text-indigo-600">&laquo; First</a>
+                    <a href="?page={{ page_obj.previous_page_number }}" class="mr-3 font-mono font-semibold text-indigo-600">Previous</a>
+                {% endif %}
+        
+                <span class="current mr-4">
+                    Page {{ page_obj.number }} of.
+                </span>
+                {% for i in paginator.page_range %} 
+                    {% if page_obj.number != i %}
+                    <a class="mr-2 text-green-600 font-medium" href="?page={{ i }}">{{ i }}</a>
+                    {% endif %} 
+                {% endfor %} 
+        
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="mr-3 font-mono font-semibold text-indigo-600">Next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}" class="mr-3 font-mono font-semibold text-indigo-600">Last &raquo;</a>
+                {% endif %}
+            </span>
         </div>
     </div>
 </div>

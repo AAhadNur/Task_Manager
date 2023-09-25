@@ -1,6 +1,8 @@
+from typing import Any
 from django.utils import timezone
 from datetime import date
 from datetime import timedelta
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
@@ -8,7 +10,6 @@ from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteVi
 from django.db.models import Q
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy
 
 from tasks.models import Task, TaskPhoto, Project
 from tasks.forms import TaskPhotoUploadForm, TaskForm
@@ -20,8 +21,8 @@ from tasks.mixins import OwnerRequiredMixin
 class TaskListView(ListView):
     model = Task
     template_name = 'tasks/home.html'
-    context_object_name = 'tasks'
     paginate_by = 6
+    context_object_name = 'tasks'
 
     def get_queryset(self):
         queryset = Task.objects.all()
@@ -107,6 +108,9 @@ class TaskDetailView(DetailView, FormView):
         if photo:
             task_photo = TaskPhoto(task=task, photo=photo)
             task_photo.save()
+            messages.success(self.request, 'Uploaded a new photo')
+        else:
+            messages.error(self.request, 'You did not select any photo')
 
         return HttpResponseRedirect(reverse('task-detail', kwargs={'pk': task.pk}))
 
@@ -118,6 +122,7 @@ def delete_task_photo(request, task_id, photo_id):
 
     if photo.task == task:
         photo.delete()
+        messages.success(request, 'Photo Deleted')
 
     return redirect('task-detail', pk=task.pk)
 
@@ -126,11 +131,15 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task
     form_class = TaskForm
     template_name = 'tasks/task_form.html'
-    success_url = reverse_lazy('home')
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
+
+    def get_success_url(self):
+        messages.success(
+            self.request, f'{self.request.user.username} Created a new Task')
+        return reverse('task-detail', kwargs={'pk': self.object.pk})
 
 
 class TaskUpdateView(OwnerRequiredMixin, UpdateView):
@@ -139,13 +148,17 @@ class TaskUpdateView(OwnerRequiredMixin, UpdateView):
     template_name = 'tasks/task_form.html'
 
     def get_success_url(self):
+        messages.success(self.request, 'Task updated successfully ...')
         return reverse('task-detail', kwargs={'pk': self.object.pk})
 
 
 class TaskDeleteView(OwnerRequiredMixin, DeleteView):
     model = Task
     template_name = 'tasks/task_delete.html'
-    success_url = reverse_lazy('task-list')
+
+    def get_success_url(self):
+        messages.success(self.request, 'Task deleted...')
+        return reverse('home')
 
 
 def all_projects(request):

@@ -42,7 +42,7 @@ class Task(models.Model):
     is_complete = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['title']
+        ordering = ['due_date']
 
     def __str__(self):
         return self.title
